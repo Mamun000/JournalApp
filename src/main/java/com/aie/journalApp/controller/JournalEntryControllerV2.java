@@ -23,10 +23,7 @@ public class JournalEntryControllerV2 {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/entry")
-    public String entryPoint(){
-        return journalEntryService.entryPoint();
-    }
+
 
 
    @GetMapping("/{userName}")
@@ -87,6 +84,7 @@ public class JournalEntryControllerV2 {
 
 
     }
+
 
 
 
