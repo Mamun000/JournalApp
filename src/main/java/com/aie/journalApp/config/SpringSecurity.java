@@ -29,7 +29,7 @@ public class SpringSecurity {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/public/**").permitAll()
-                        .requestMatchers("/journal/**", "/user/**").authenticated()
+                        .requestMatchers("/journal/**", "/user/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )

@@ -4,9 +4,7 @@ package com.aie.journalApp.service;
 //controller ----> service -------> repository
 
 
-import com.aie.journalApp.entity.JournalEntry;
 import com.aie.journalApp.entity.User;
-import com.aie.journalApp.repository.JournalEntryRepository;
 import com.aie.journalApp.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +22,17 @@ public class UserService {
     private UserRepository userRepository;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public void saveEntry(User user) {
+    public void saveNewUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList("USER"));
         userRepository.save(user);
     }
-    public void saveNewUser(User user) {
+    public void saveAdmin(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(Arrays.asList("USER","ADMIN"));
+        userRepository.save(user);
+    }
+    public void saveUser(User user) {
         userRepository.save(user);
     }
 

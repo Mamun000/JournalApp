@@ -31,7 +31,7 @@ public class JournalEntryService {
             journalEntry.setDate(LocalDateTime.now());
             JournalEntry saved = journalEntryRepository.save(journalEntry);
             user.getJournalEntries().add(saved);
-            userService.saveEntry(user);
+            userService.saveUser(user);
         }catch(Exception e){
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
@@ -49,11 +49,23 @@ public class JournalEntryService {
         return journalEntryRepository.findById(myId);
     }
 
-    public void deleteById(ObjectId myId, String userName){
-        User user = userService.findByUserName(userName);
-        user.getJournalEntries().removeIf(x -> x.getId().equals(myId));
-        userService.saveEntry(user);
-        journalEntryRepository.deleteById(myId);
+    @Transactional
+    public boolean deleteById(ObjectId myId, String userName){
+        boolean removed = false;
+        try {
+            User user = userService.findByUserName(userName);
+            removed=user.getJournalEntries().removeIf(x -> x.getId().equals(myId));
+            if(removed){
+                userService.saveUser(user);
+                journalEntryRepository.deleteById(myId);
+            }
+            return removed;
+        }catch(Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+
     }
+
+
 
 }
